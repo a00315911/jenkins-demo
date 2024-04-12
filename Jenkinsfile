@@ -1,7 +1,11 @@
+  pipeline{
    agent any 
     
     tools {
         maven 'maven3' 
+    }
+    environment{
+        SONAR_TOKEN = credentials('global_token')
     }
    
     stages {
@@ -39,4 +43,4 @@
             }
         }
     }
-
+}
