@@ -14,7 +14,7 @@ pipeline{
     stages{
         stage('Build'){
             steps{
-                git 'https://github.com/a00315911/simple-java-maven-app-deji.git'
+                git 'https://github.com/a00315911/jenkins-demo'
                 bat "mvn clean package -DskipTests"
             }
             
