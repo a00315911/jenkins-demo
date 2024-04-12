@@ -7,7 +7,7 @@
     stages {
         stage('Clone Git Repository') {
             steps {
-                git branch: 'master',
+                git branch: 'main',
                     url: 'https://github.com/a00315911/jenkins-demo.git'
             }
         }
