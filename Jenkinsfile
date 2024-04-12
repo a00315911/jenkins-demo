@@ -5,7 +5,7 @@ pipeline{
     }
     
     environment {
-        SONAR_TOKEN = credentials('global_token')
+        SONAR_TOKEN = credentials('jenkins-demo')
        
     }
     
