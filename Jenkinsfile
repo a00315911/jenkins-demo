@@ -1,11 +1,11 @@
 pipeline{
     agent any
     tools{
-        maven "maven3"
+        maven "maven-3.9.6"
     }
     
     environment {
-        SONAR_TOKEN = credentials('SONAR_TOKEN')
+        SONAR_TOKEN = credentials('global_token')
        
     }
     
