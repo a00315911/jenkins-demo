@@ -5,7 +5,7 @@
         maven 'maven3' 
     }
     environment{
-        SONAR_TOKEN = credentials('global_token')
+        SONAR_TOKEN = credentials('jenkins-demo')
     }
    
     stages {
