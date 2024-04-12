@@ -6,9 +6,7 @@ pipeline{
     
     environment {
         SONAR_TOKEN = credentials('SONAR_TOKEN')
-        SONAR_HOST_URL = 'https://sonarcloud.io'
-        SONAR_ORGANIZATION = 'a00315911'
-        SONAR_PROJECT_KEY = 'a00315911_simple-java-maven-app-deji'
+       
     }
     
     stages{
@@ -50,7 +48,7 @@ pipeline{
         stage('SonarCloud Analysis') {
             steps {
                 // Avoid redundant work
-                bat "mvn sonar:sonar -Dsonar.token=%SONAR_TOKEN% -Dsonar.host.url=%SONAR_HOST_URL% -Dsonar.organization=%SONAR_ORGANIZATION% -Dsonar.projectKey=%SONAR_PROJECT_KEY% -Dsonar.language=java -Dsonar.sources=src/main/java -Dsonar.exclusions=**/*.css,**/*.js,**/*.jsp,**/*.xml"
+                bat  "cd jenkins-demo1 && mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN -Dsonar.host.url=http://localhost:9000"
             }
         }
         
