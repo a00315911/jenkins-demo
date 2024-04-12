@@ -1,56 +1,42 @@
-pipeline{
-    agent any
-    tools{
-        maven "maven3"
-    }
+   agent any 
     
-    environment {
-        SONAR_TOKEN = credentials('jenkins-demo')
-       
+    tools {
+        maven 'maven3' 
     }
-    
-    stages{
-        stage('Build'){
-            steps{
-                git 'https://github.com/a00315911/jenkins-demo'
-                bat "mvn clean package -DskipTests"
-            }
-            
-            post{
-                always{
-                    echo 'stage post always'
-                }
-                
-                
-                success{
-                    echo 'pipeline post success'
-                }
-                
-                failure{
-                    echo 'pipeline post failure'
-                }
-                
-            }
-        }
-        
-        stage('Test') {
+   
+    stages {
+        stage('Clone Git Repository') {
             steps {
-                bat "mvn test jacoco:prepare-agent jacoco:report"
-            }
-
-            post {
-                always {
-                    jacoco(execPattern: '**/target/jacoco.exec')
-                    junit '**/target/surefire-reports/*.xml'
-                }
+                git branch: 'master',
+                    url: 'https://github.com/a00315911/jenkins-demo.git'
             }
         }
-        stage('SonarCloud Analysis') {
+        stage('Build Project') {
             steps {
-                // Avoid redundant work
-                bat  "cd jenkins-demo1 && mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN -Dsonar.host.url=http://localhost:9000"
+                bat 'mvn clean install'
             }
         }
-        
+        stage('Execute Unit Tests') {
+      		steps {
+        		bat 'mvn test'
+      		}
+    	}
+        stage('Static Code Analysis (SonarQube)') {
+        	steps {
+        		withSonarQubeEnv('SonarQube_server'){
+        		 bat 'mvn sonar:sonar'   
+        		}
+      		}
+        }
+        stage('Archive Artifacts') {
+            steps {
+                archiveArtifacts 'target/*.jar'
+            }
+        }
+        stage('Deploy Application (Simulation)') {
+            steps {
+                echo 'Successfully deployed the application!'
+            }
+        }
     }
 }
